@@ -37,8 +37,7 @@ import cv2
 import numpy as np
 
 
-import curses
-import control as control
+
 
 dd = diff_drive
 ref = dd.H_REF()
@@ -124,6 +123,9 @@ while True:
     
     print 'Sim Time = ', tim.sim[0]
 
+	#print "input was", x
+
+
     hsvl = cv2.cvtColor(imgL, cv2.COLOR_BGR2HSV)
     hsvr = cv2.cvtColor(imgR, cv2.COLOR_BGR2HSV)
     upper_white = np.array([150,150,150], dtype=np.uint8)
@@ -147,7 +149,7 @@ while True:
 	myL=momentmaskL["m01"]/momentmaskL["m00"]
 #prints the location of middle
     print mxL, myL 
-
+    print '----------------------------------'
 
     if momentmaskR["m00"] != 0:
 	mxR=momentmaskR["m10"]/momentmaskR["m00"]
@@ -156,49 +158,19 @@ while True:
     print mxR, myR 
     angleR=mxR/10.667
     angleL=mxL/10.667
+    print angleR, angleR 
     distance=(0.4)/(np.tan(angleR)+np.tan(angleL))
-
-    print 'distance=',distance
-
+    print 'distance='
+  
+    print distance
     # Sets reference to robot
-    
+    r.put(ref);
     cv2.circle(imgL, (int(mxL),int(myL)), 4, (255,255,255), -1,5,0) 
     cv2.circle(imgR, (int(mxR),int(myR)), 4, (255,255,255), -1,5,0)
     #cv2.circle(img, [int(m int(my)], 3,Scalar( 255, 255, 255 )) 	
     cv2.imshow("wctrl_L", imgL)
     cv2.imshow("wctrl_R", imgR)
     # Sleeps
-
-
-    x=control.control()
-	#print "input was", x
-    if x==ord('a'):
-	
-		ref.ref[0] = 0.1
-    		ref.ref[1] = -0.1
-		r.put(ref);
-
-    elif x==ord('s'):
-	
-		ref.ref[0] = -0.1
-    		ref.ref[1] = -0.1
-		r.put(ref);
-
-
-    elif x==ord('d'):
-
-		ref.ref[0] = -0.1
-    		ref.ref[1] = 0.1
-		r.put(ref);
-
-    elif x==ord('w'):
-		
-         	ref.ref[0] = 0.1
-    		ref.ref[1] = 0.1
-  		r.put(ref);
-    else:
-		print "no press"
-    
     time.sleep(0.1) 
   
 #-----------------------------------------------------
